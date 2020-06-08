@@ -45,33 +45,49 @@ local({
 
 ### Text
 
-XYZ.
+Suppose that
+
+$$
+\boldsymbol{Y} \sim \mathcal{N} \left({ {\begin{bmatrix} 1\\ 2 \end{bmatrix}} , {\begin{bmatrix} 2 & 1\\ 1 & 2 \end{bmatrix}} }\right) \ .
+$$
+
+Find the conditional *p.d.f.* of $\mathit{Y_1}$, given that $\mathit{Y_1} + \mathit{Y_1} = 3$.
 
 
 ### Solution
+
+Probably just some $\LaTeX$.
 
 <!--```{r cs_01_03, code = readLines("src/CS_01_03.R"), echo=TRUE}
 ```                                                                    -->
 
 ### Comments
 
-XYZ.
+Probably none.
 
 ## Exercise 4.3
 
 ### Text
 
-XYZ.
+Random variables $\mathit{X}$ and $\mathit{Y}$ have joint *p.d.f.* $f(x,y) = kx^{\alpha}y^{\beta}$, $0 \leq x \leq 1$, $0 \leq y \leq 1$. Assume that you have $n$ independent pairs of observations $\left({ x_i, y_i }\right)$.  
+
+(a) Evaluate $k$ in terms of $\alpha$ and $\beta$.  
+
+(b) Find the maximum likelihood estimators of $\alpha$ and $\beta$.   
+
+(c) Find approximate variances of $\hat{\alpha}$ and $\hat{\beta}$.   
 
 
 ### Solution
+
+Probably just some $\LaTeX$.
 
 <!--```{r cs_04_03, code = readLines("src/CS_04_03.R"), echo=TRUE}
 ```                                                                    -->
 
 ### Comments
 
-XYZ.
+Probably none.
 
 
 
@@ -81,34 +97,127 @@ XYZ.
 
 ### Text
 
-XYZ.
+The following code draws, in a $2 \times 2$ layout, $10$ boxplots of random samples of $1000$ from a normal distribution, $10$ boxplots of random samples of $1000$ from a *t*-distribution with $7$ *d.f.*, $10$ boxplots of random samples of $200$ from a normal distribution, and $10$ boxplots of random samples of $200$ from a t-distribution with $7$ *d.f.*:
 
+```{r daag_04_05_text_01, echo=TRUE}
+oldpar <- par(mfrow=c(2,2))
 
-### Solution
+tenfold1000 <- rep(1:10, rep(1000,10))
 
-<!--```{r daag_04_05, code = readLines("src/DAAG_04_05.R"), echo=TRUE}
-```                                                                    -->
+boxplot(split(rnorm(1000*10), tenfold1000), ylab="normal - 1000")
+boxplot(split(rt(1000*10, 7), tenfold1000),
+    ylab=expression(t[7]*" - 1000"))
+
+tenfold100 <- rep(1:10, rep(100, 10))
+
+boxplot(split(rnorm(100*10), tenfold100), ylab="normal - 100")
+boxplot(split(rt(100*10, 7), tenfold100),
+    ylab=expression(t[7]*" - 100"))
+
+par(oldpar)
+
+```
+
+Refer back to the discussion of heavy-tailed distributions in *DAAG, 3.2.2*, and comment on the different numbers and configurations of points that are flagged as possible outliers.
 
 ### Comments
 
-XYZ.
+Something.
 
 ## Exercise 11.5
 
-### Text
+### Text and Comments (interleaved)
 
-XYZ.
+This exercise will compare alternative measures of accuracy from $\mathsf{randomForest()}$ runs.  
+
+First, $16$ rows where data (on `V6`) is missing will be omitted:  
+
+```{r daag_11_05_text_01, echo=TRUE}
+library(MASS)
+
+sapply(MASS::biopsy, function(x)sum(is.na(x)))
+biops <- na.omit(MASS::biopsy[,-1])    # Column 1 is ID
+
+## Examine list element names in randomForest object
+names(randomForest::randomForest(class~., data=biops))
+
+sapply(MASS::biopsy, function(x)sum(is.na(x)))
+biops <- na.omit(MASS::biopsy[,-1])    # Column 1 is ID
+
+## Examine list element names in randomForest object
+names(randomForest::randomForest(class~ ., data=biops))
+
+```
+
+(a) Compare repeated $\mathsf{randomForest()}$ runs:
+
+```{r daag_11_05_text_02, echo=TRUE}
+## Repeated runs, note variation in OOB accuracy.
+for(i in 1:10) {
+  biops.rf <- randomForest::randomForest(class~ ., data=biops)
+  OOBerr   <- mean(biops.rf$err.rate[,"OOB"])
+  
+  print(paste(i, ": ", round(OOBerr, 4), sep=""))
+  print(round(biops.rf$confusion, 4))
+}
+
+```  
+
+**COMMENTS:**  
+
+Something!  
 
 
-### Solution
 
-<!--```{r daag_11_05, code = readLines("src/DAAG_11_05.R"), echo=TRUE}
-```                                                                    -->
+(b) Compare *OOB* accuracies with *test* set accuracies:
 
-### Comments
+```{r daag_11_05_text_03, echo=TRUE}
+## Repeated train/test splits: OOB accuracy vs test set accuracy.
+for(i in 1:10){
+  trRows <- sample(1:dim(biops)[1], size=round(dim(biops)[1]/2))
+  
+  biops.rf <- randomForest::randomForest(class~ ., data=biops[trRows, ],
+    xtest=biops[-trRows,-10],
+    ytest=biops[-trRows,10])
+  
+  oobErr <- mean(biops.rf$err.rate[,"OOB"])
+  testErr <- mean(biops.rf$test$err.rate[,"Test"])
+  
+  print(round(c(oobErr,testErr),4))
+}
 
-XYZ.
+```
 
+Plot test set accuracies against OOB accuracies. Add the line y = x to the plot.  
+
+**SOLUTION:**  
+
+```{r daag_11_05_text_04, echo=TRUE}
+# Something!
+
+```
+
+Is there any consistent difference in the accuracies? Given a random training/test split, is there any reason to expect a consistent difference between OOB accuracy and test accuracy?  
+
+**COMMENTS:**  
+
+Something!  
+
+
+(c) Calculate the error rate for the training data:  
+
+```{r daag_11_05_text_05, echo=TRUE}
+
+
+randomForest::randomForest(class~ ., data=biops, xtest=biops[,-10],
+  ytest=biops[,10])
+
+```
+Explain why use of the training data for testing leads to an error rate that is zero.
+
+**COMMENTS:**  
+
+Something! 
 
 
 # Exercises from *BC* 
@@ -117,7 +226,19 @@ XYZ.
 
 ### Text
 
-XYZ.
+***Learning about the upper bound of a discrete uniform density***  
+
+Suppose one takes independent observations $y_1 , \dots, y_n$ from a uniform distribution on the set $\{{1, 2, \dots, N }\}$, where the upper bound $N$ is unknown.  
+Suppose one places a uniform prior for $N$ on the values $1, \dots, B$, where $B$ is known. Then the posterior probabilities for $N$ are given by  
+$$
+g(N|y) \propto \frac{1}{N^n}, \ y_{(n)} \leq N \leq B \ .
+$$
+
+where $y_{(n)}$ is the maximum observation. To illustrate this situation, suppose a tourist is waiting for a taxi in a city. During this waiting time, she observes five taxis with the numbers $43$, $24$, $100$, $35$, and $85$. She assumes that taxis in this city are numbered from $1$ to $N$, she is equally likely to observe any numbered taxi at a given time, and observations are independent. She also knows that there cannot be more than $200$ taxis in the city.  
+
+a) Use $\mathsf{R}$ to compute the posterior probabilities of $N$ on a grid of values.  
+b) Compute the posterior mean and posterior standard deviation of $N$.  
+c) Find the probability that there are more than $150$ taxis in the city.  
 
 
 ### Solution
@@ -128,7 +249,5 @@ XYZ.
 ### Comments
 
 XYZ.
-
-
 
 <!-- LEAVE A NEWLINE AT THE END-OF-FILE! -->
