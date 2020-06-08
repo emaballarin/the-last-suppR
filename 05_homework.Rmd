@@ -1,0 +1,134 @@
+---
+title: "SMDS Homework - Block 5"
+author: "A. Carraro, P. Morichetti, and E. Ballarin  |  Group 'E'"
+date: "22nd June 2020"
+output:
+  html_document:
+    theme: darkly
+    highlight: breezedark
+    mathjax: default
+    self_contained: true
+    md_extensions: +autolink_bare_uris
+    toc: true
+    toc_collapsed: false
+    toc_float: true
+    toc_depth: 3
+    number_sections: false
+header-includes:
+- \usepackage{color}
+- \usepackage{graphicx}
+- \usepackage{grffile}
+institute: University of Trieste, SISSA, ICTP, University of Udine
+graphics: yes
+fontsize: 10pt
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(fig.align = 'center', warning=FALSE, message=FALSE, fig.asp=0.625, dev='png', global.par = TRUE, dev.args=list(pointsize=10), fig.path = 'figs/')
+```
+
+```{r setup, include=FALSE}
+library(knitr)
+local({
+  hook_plot = knit_hooks$get('plot')
+  knit_hooks$set(plot = function(x, options) {
+    paste0('\n\n----\n\n', hook_plot(x, options))
+  })
+})
+```
+
+
+
+# Exercises from *CS* 
+
+## Exercise 1.3
+
+### Text
+
+XYZ.
+
+
+### Solution
+
+<!--```{r cs_01_03, code = readLines("src/CS_01_03.R"), echo=TRUE}
+```                                                                    -->
+
+### Comments
+
+XYZ.
+
+## Exercise 4.3
+
+### Text
+
+XYZ.
+
+
+### Solution
+
+<!--```{r cs_04_03, code = readLines("src/CS_04_03.R"), echo=TRUE}
+```                                                                    -->
+
+### Comments
+
+XYZ.
+
+
+
+# Exercises from *DAAG* 
+
+## Exercise 4.5
+
+### Text
+
+XYZ.
+
+
+### Solution
+
+<!--```{r daag_04_05, code = readLines("src/DAAG_04_05.R"), echo=TRUE}
+```                                                                    -->
+
+### Comments
+
+XYZ.
+
+## Exercise 11.5
+
+### Text
+
+XYZ.
+
+
+### Solution
+
+<!--```{r daag_11_05, code = readLines("src/DAAG_11_05.R"), echo=TRUE}
+```                                                                    -->
+
+### Comments
+
+XYZ.
+
+
+
+# Exercises from *BC* 
+
+## Exercise 3.2
+
+### Text
+
+XYZ.
+
+
+### Solution
+
+<!--```{r bc_03_02, code = readLines("src/BC_03_02.R"), echo=TRUE}
+```                                                                    -->
+
+### Comments
+
+XYZ.
+
+
+
+<!-- LEAVE A NEWLINE AT THE END-OF-FILE! -->
