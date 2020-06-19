@@ -126,7 +126,7 @@ Something.
 
 ## Exercise 11.5
 
-### Text and Comments (interleaved)
+### Text
 
 This exercise will compare alternative measures of accuracy from $\mathsf{randomForest()}$ runs.  
 
@@ -151,28 +151,73 @@ names(randomForest::randomForest(class~ ., data=biops))
 
 (a) Compare repeated $\mathsf{randomForest()}$ runs:
 
-```{r daag_11_05_text_02, echo=TRUE}
+```{r, echo=TRUE, eval=FALSE}
 ## Repeated runs, note variation in OOB accuracy.
 for(i in 1:10) {
-  biops.rf <- randomForest::randomForest(class~ ., data=biops)
-  OOBerr   <- mean(biops.rf$err.rate[,"OOB"])
+  biops.rf <- randomForest(class~ ., data=biops)
+  OOBerr <- mean(biops.rf$err.rate[,"OOB"])
   
   print(paste(i, ": ", round(OOBerr, 4), sep=""))
   print(round(biops.rf$confusion, 4))
 }
-
-```  
-
-**COMMENTS:**  
-
-Something!  
-
-
+``` 
 
 (b) Compare *OOB* accuracies with *test* set accuracies:
 
+```{r, echo=TRUE, eval=FALSE}
+## Repeated train/test splits: OOB accuracy vs test set accuracy.
+for(i in 1:10){
+  trRows <- sample(1:dim(biops)[1], size=round(dim(biops)[1]/2))
+  biops.rf <- randomForest(class~ ., data=biops[trRows, ],
+                           xtest=biops[-trRows,-10],
+                           ytest=biops[-trRows,10])
+  oobErr <- mean(biops.rf$err.rate[,"OOB"])
+  testErr <- mean(biops.rf$test$err.rate[,"Test"])
+  print(round(c(oobErr,testErr),4))
+}
+```
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Plot test set accuracies against OOB accuracies. Add the line `y = x` to the plot. Is there any consistent difference in the accuracies? Given a random training/test split, is there any reason to expect a consistent difference between OOB accuracy and test accuracy?
+
+(c) Calculate the error rate for the training data:  
+
+```{r, echo=TRUE, eval=FALSE}
+randomForest(class~ ., data=biops, xtest=biops[,-10],
+             ytest=biops[,10])
+```
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Explain why use of the training data for testing leads to an error rate that is zero.
+
+### Solution
+
+(a) We compare repeated $\mathsf{randomForest()}$ runs:
+
+```{r daag_11_05_text_02, echo=TRUE}
+## Repeated runs, note variation in OOB accuracy.
+OOBerr <- c()
+for(i in 1:10) {
+  biops.rf  <- randomForest::randomForest(class~ ., data=biops)
+  OOBerr[i] <- mean(biops.rf$err.rate[,"OOB"])
+  
+  print(paste(i, ": OOB err = ", round(OOBerr[i], 4), sep=""))
+  print(round(biops.rf$confusion, 4))
+}
+```  
+
+```{r daag_11_05_text_02.5, echo=TRUE}
+round(mean(OOBerr), 5)
+var(OOBerr)
+```
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; We can see that the OOB errors are more or less equal, with a mean of $0.02961$ and a very little variance.
+
+
+(b) We compare *OOB* accuracies with *test* set accuracies:
+
 ```{r daag_11_05_text_03, echo=TRUE}
 ## Repeated train/test splits: OOB accuracy vs test set accuracy.
+oobErr <- c()
+testErr <- c()
 for(i in 1:10){
   trRows <- sample(1:dim(biops)[1], size=round(dim(biops)[1]/2))
   
@@ -180,44 +225,38 @@ for(i in 1:10){
     xtest=biops[-trRows,-10],
     ytest=biops[-trRows,10])
   
-  oobErr <- mean(biops.rf$err.rate[,"OOB"])
-  testErr <- mean(biops.rf$test$err.rate[,"Test"])
+  oobErr[i] <- mean(biops.rf$err.rate[,"OOB"])
+  testErr[i] <- mean(biops.rf$test$err.rate[,"Test"])
   
-  print(round(c(oobErr,testErr),4))
+  print(round(c(oobErr[i],testErr[i]),4))
 }
-
 ```
 
-Plot test set accuracies against OOB accuracies. Add the line y = x to the plot.  
+```{r daag_11_05_text_03.5, echo=TRUE}
+mean(oobErr)
+mean(testErr)
+```
 
-**SOLUTION:**  
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; We can see that the two test errors can be quite different from each other. ontheless, the means are quite similar.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; We plot test set accuracies against OOB accuracies, adding the line `y = x` to the plot.  
 
 ```{r daag_11_05_text_04, echo=TRUE}
-# Something!
-
+plot(oobErr,testErr, xlab="OOB error", ylab="test error", main = "Test set accuracies")
+text(x=oobErr, y=testErr, labels=seq(1, length(oobErr), 1), pos=4, offset=0.8, cex=0.8)
+abline(0, 1, col="red")
 ```
 
-Is there any consistent difference in the accuracies? Given a random training/test split, is there any reason to expect a consistent difference between OOB accuracy and test accuracy?  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; We can see that there isn't any consistent difference in the accuracies, and given a random training/test split, there isn't any reason to expect a consistent difference between OOB accuracy and test accuracy. This is since the points in the graph are always changing at each repetition, showing no pattern at all but only randomness.
 
-**COMMENTS:**  
-
-Something!  
-
-
-(c) Calculate the error rate for the training data:  
+(c) We calculate the error rate for the training data:  
 
 ```{r daag_11_05_text_05, echo=TRUE}
-
-
-randomForest::randomForest(class~ ., data=biops, xtest=biops[,-10],
-  ytest=biops[,10])
-
+randomForest::randomForest(class~ ., data=biops, xtest=biops[,-10], ytest=biops[,10])
 ```
-Explain why use of the training data for testing leads to an error rate that is zero.
 
-**COMMENTS:**  
-
-Something! 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Explain why use of the training data for testing leads to an error rate that is zero. ?????????????????????????????
 
 
 # Exercises from *BC* 
