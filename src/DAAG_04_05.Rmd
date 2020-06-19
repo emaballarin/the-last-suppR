@@ -1,9 +1,5 @@
----
-title: "DAAG_04_05"
-output: html_document
----
-
 ```{r}
+set.seed(151)
 oldpar <- par(mfrow=c(2,2))
 
 tenfold1000 <- rep(1:10, rep(1000,10))
@@ -21,13 +17,17 @@ boxplot(split(rt(100*10, 7), tenfold100),
 par(oldpar)
 ```
 
-The following analysis is structured according a top-down schema, so practically we are going to discuss on the overall quartiers and then say something more in detail for each of them, if it is needed. Furthermore, different sets of boxplots we will call quartiers.
 
-First thing that we may say is on the median, i.e. that it is consistent and, more or less, fixed in zero for each sets of boxplots, but with some little flactuation in the cases of less samples. Moreover, min and max values stay fixed around 2.2 (in absolute value) on the two top-quartiers, so the two "whiskers" have the same length; this fact revails an important point, i.e. the normal and t distributions are simmetric around the median. Different story is on the two bottom-quartiers where min and max values are different not only regard to min and max values of the top-quartiers, but also in respect to each boxplots in the same set. However, even if these variations are present, we have say that they are not so clear, since they change just for a couple of units. Moreover, this information is also reflected on the "whiskers" length that are not more of the same dimesion (again, among different boxplots of the same set, but also in the same boxplot). So, in this case we lost the important property of simmetry.
-Another thing that we may note is about the first and third quantiles, indeed they are fixed on the top-quartiers (i.e. around 0.6), and so they define two sets of boxplots of the same sizes; in particular very close to the medians. While, in the two bottom-quartiers, the quantiles are not more fixed, instead they are boxplots dependent and more or less close to the median.
-Last thing to be take into account is about the outliers, but before it we have to remind that boxplot shows the outliers as blank points outside the "whiskers", and in general they are 1% of the samples; so, for 1000 samples we may have 100 candidate outliers while for 100 samples we may have 1 outlier. After this clarification we can focus on the top-quartiers where candidate outliers are displaied in each boxplots; however we have to be carefull because, in general, they are quite close to the "whiskers" borders. That may lead to a deepder analysis, inasmuch is not so easy to judge them, in particular for the t distribution where these points are also very close to each other. While in the two bottom-quartiers not all boxplots shows possible outliers (around half of each set), bust in these cases it is more clear they are further from the "whiskers" borders, than is more easy to judge them as candidate outliers. As for example we may lead to flag as outliers those points in which the median-blox is a bit far from zero, since outliers condition median value. 
-The presence of possibible outliers cames from the concept of heavy-tailed distribution, i.e. those in which the extreme portion of the distribution spreads out further relative to the width of the center of the distribution; in general on both sides of the box. So, the normal and t distributions boxplots in the 1000 samples case show two set of heavy-tailed distribution according the previous definition, while in the two bottom-quartiers this property is not so evident.
+The analisys over these boxplots follow a top-down structure. So, first things that we may say are related with the mean in fact each set of ten boxplots have, more or less, the same mean value, i.e. around zero, but with a very small flactuation in the 100-samples cases. Same story is on the maximum and minimum values but with different values in case the samples come from a normal distribution or t distribution, but in this case we have to look according which distribution the samples belong to (more ditails will be given later). Last comment on the overall boxplots is about the box-size defined by the quantilies: as we can see the box-size for the normal distributions is larger than the box-size for the t distribution, also if we consider the set of boxplots with less samples.
 
+Now, we may say something more by looking each of the four set of boxes. 
+In the top-left quarter, max and min values are, more or less, close to 2.3 in absolute value, and it is the same for the quantiles with value 0.2; this is quite important because it means this normal distribution is very simmetric. Moreover, according the heavy-tail definition, we know that 1% of the samples are possible outliers, and this is shown by the set of points outside the "whiskers"; in particular, more far from the first and third quantiles they are and more suitable they are to be outliers. In this case, more than half boxes have some candidates outliers.
+
+In the bottom-left quarter, max and min values are not more fixed as the previous situation: now, each boxplot has its how values for them, but in any case they differ for some units. Moreover, the first and third quantiles are no more fixed in each boxes, and the "whiskers" on both sides have different distances, so this event is interesting because it shows the asymmetry of the distribution with no so much samples. In this set of boxplots, we may expect to have one point as possible outliers for each box, and some of them follow this path but just less than half set has outliers. Quite opposite event in respect the previous one.
+
+In the top-right quarter we have a t distribution and this case is very similar to the first one but having different values for min, max and quantiles. Moreover, these parameters stay fixed and the "whiskers" have the same length, so the symmetry is respected. In the end, for what concern possible outliers we have to be careful, because most of the outsider points are very close to each other and very close to the "whiskers" borders, so it is not so immediate say something; more deep analysis is suggested in this case.
+
+In the bottom-right quarter, things are now similar to the bottom-left quarter, so the simmetry is not more present and the boxes have different sizes. However, in this last case, there are more possible outliers along the different boxes, and they are more easy to be localized (in contrast with the previous case in which it is not true).
 
 
 
