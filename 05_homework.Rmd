@@ -81,7 +81,7 @@ So we have that the joint distribution is
 
 $$
 \begin{align*}
-f(\boldsymbol y) &= \frac1{\sqrt{(2 \pi)^2 \cdot \det(\boldsymbol\Sigma)}} \exp \left( -\frac12 (\boldsymbol y - \boldsymbol\mu)^T \boldsymbol\Sigma^{-1} (\boldsymbol y - \boldsymbol\mu) \right)\\
+f(\boldsymbol y = (y_1, y_2)) &= \frac1{\sqrt{(2 \pi)^2 \cdot \det(\boldsymbol\Sigma)}} \exp \left( -\frac12 (\boldsymbol y - \boldsymbol\mu)^T \boldsymbol\Sigma^{-1} (\boldsymbol y - \boldsymbol\mu) \right)\\
 &= \frac1{\sqrt{(2 \pi)^2 \cdot 3}} \exp \left( -\frac12 \cdot \frac23 (y_1^2 - y_1y_2 - 3y_2+ y_2^2 + 3) \right)
 \end{align*}
 $$
@@ -254,7 +254,7 @@ for(i in 1:10) {
 print(paste("The mean is", round(mean(OOBerr), 5), "while the variance is", round(var(OOBerr), 9)))
 ```
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; We can see that the OOB errors are more or less equal, with a mean of $0.02961$ and a very little variance.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; We can see that the OOB errors are more or less equal, with a mean of $0.029$ and a very little variance.
 
 
 (b) We compare *OOB* accuracies with *test* set accuracies:
@@ -277,8 +277,9 @@ for(i in 1:10){
 }
 ```
 
-```{r daag_11_05_text_03.5, echo=TRUE}
-print(paste("The mean of the OOB error is", round(mean(oobErr), 5), "while the maen of the test error is", round(mean(testErr), 5)))
+```{r daag_11_05_text_03.5, echo=FALSE}
+print(paste("The mean of the OOB error is", round(mean(oobErr), 5), "while the mean of the test error is", round(mean(testErr), 5)))
+#print(paste("The variance between the two errors is", round(var(c(mean(oobErr), mean(testErr))), 6)))
 ```
 
 
@@ -292,7 +293,7 @@ text(x=oobErr, y=testErr, labels=seq(1, length(oobErr), 1), pos=4, offset=0.8, c
 abline(0, 1, col="red")
 ```
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; We can see that there isn't any consistent difference in the accuracies, and given a random training/test split, there isn't any reason to expect a consistent difference between OOB accuracy and test accuracy. This is since the points in the graph are always changing at each repetition, showing no pattern at all but only randomness.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; We can see that there isn't any consistent difference in the accuracies, and given a random training/test split, there isn't any reason to expect a consistent difference between OOB accuracy and test accuracy. This is since the points in the graph are always changing position at each repetition and they don't show any pattern in the plot at all, only randomness.
 
 (c) We calculate the error rate for the training data:  
 
@@ -300,7 +301,7 @@ abline(0, 1, col="red")
 randomForest::randomForest(class~ ., data=biops, xtest=biops[,-10], ytest=biops[,10])
 ```
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Explain why use of the training data for testing leads to an error rate that is zero. ?????????????????????????????
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The use of training data for testing leads to an error rate that is zero because the model was explicitly trained to reduce at most the error between the predicted labels and the true labels of the training data. Anyway, this tells us that this model is very good at predicting the labels of this specific dataset. But it could perform poorly on another set of data, since it may be overfitting the data at our disposal. That's why the model should always be tested on data that wasn't used for the training phase.
 
 
 # Exercises from *BC* 
