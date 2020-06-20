@@ -5,7 +5,7 @@ date: "22nd June 2020"
 output:
   html_document:
     theme: darkly
-    highlight: breezedark
+#    highlight: breezedark
     mathjax: default
     self_contained: true
     md_extensions: +autolink_bare_uris
@@ -82,7 +82,7 @@ Random variables $\mathit{X}$ and $\mathit{Y}$ have joint *p.d.f.* $f(x,y) = kx^
 
 Probably just some $\LaTeX$.
 
-<!--```{r cs_04_03, code = readLines("src/CS_04_03.R"), echo=TRUE}
+<!--```{r cs_04_03, code = readLines("src/CS_04_03.Rmd"), echo=TRUE}
 ```                                                                    -->
 
 ### Comments
@@ -122,7 +122,8 @@ Refer back to the discussion of heavy-tailed distributions in *DAAG, 3.2.2*, and
 
 ### Comments
 
-Something.
+<!--```{r daag_04_05, code = readLines("src/DAAG_04_05.Rmd"), echo=TRUE}
+```                                                                    -->
 
 ## Exercise 11.5
 
