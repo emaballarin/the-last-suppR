@@ -48,22 +48,68 @@ local({
 Suppose that
 
 $$
-\boldsymbol{Y} \sim \mathcal{N} \left({ {\begin{bmatrix} 1\\ 2 \end{bmatrix}} , {\begin{bmatrix} 2 & 1\\ 1 & 2 \end{bmatrix}} }\right) \ .
+\boldsymbol{Y} \sim \mathcal{N} \left( \begin{bmatrix} 1\\ 2 \end{bmatrix} , \begin{bmatrix} 2 & 1\\ 1 & 2 \end{bmatrix} \right) \ .
 $$
 
-Find the conditional *p.d.f.* of $\mathit{Y_1}$, given that $\mathit{Y_1} + \mathit{Y_1} = 3$.
+Find the conditional *p.d.f.* of $Y_1$, given that $Y_1 + Y_2 = 3$.
 
 
 ### Solution
 
-Probably just some $\LaTeX$.
+We have that $\boldsymbol{Y} = (Y_1, Y_2)$, so $\boldsymbol{y} = (y_1, y_2)$, $\boldsymbol{\mu} = (E(Y_1), E(Y_2)) = \begin{bmatrix} 1\\ 2 \end{bmatrix}$ and $\boldsymbol{\Sigma} = \begin{bmatrix} Var(Y_1) & Cov(Y_1, Y_2) \\ Cov(Y_2, Y_1) & Var(Y_2) \end{bmatrix} = \begin{bmatrix} 2 & 1\\ 1 & 2 \end{bmatrix}$.
 
-<!--```{r cs_01_03, code = readLines("src/CS_01_03.R"), echo=TRUE}
-```                                                                    -->
+We compute
 
-### Comments
+$$
+\det(\boldsymbol\Sigma) = \begin{vmatrix} 2 & 1\\ 1 & 2 \end{vmatrix} = 2\cdot 2 - 1\cdot 1 = 4 - 1 = 3
+$$
+and
+$$
+\boldsymbol\Sigma^{-1} = \begin{bmatrix} 2 & 1\\ 1 & 2 \end{bmatrix}^{-1} = \begin{bmatrix} 2/3 & -1/3 \\ -1/3 & 2/3 \end{bmatrix}
+$$
+so
+$$
+\begin{align*}
+(\boldsymbol y - \boldsymbol\mu)^T \boldsymbol\Sigma^{-1} (\boldsymbol y - \boldsymbol\mu) &= \begin{bmatrix} y_1 - 1, y_2 - 2 \end{bmatrix} \begin{bmatrix} 2 & 1\\ 1 & 2 \end{bmatrix}^{-1} \begin{bmatrix} y_1 - 1 \\ y_2 - 2 \end{bmatrix} \\
+&= \begin{bmatrix} y_1 - 1, y_2 - 2 \end{bmatrix} \begin{bmatrix} 2/3 & -1/3 \\ -1/3 & 2/3 \end{bmatrix} \begin{bmatrix} y_1 - 1 \\ y_2 - 2 \end{bmatrix} \\
+&=  \begin{bmatrix} \frac23 y_1 - \frac13 y_2 & -\frac13 y_1 + \frac23 y_2 -1 \end{bmatrix} \begin{bmatrix} y_1 - 1 \\ y_2 - 2 \end{bmatrix} \\
+&= \frac23 (y_1^2 - y_1y_2 - 3y_2+ y_2^2 + 3) \\
+&= \frac23 \left(y_1 - \frac{y_2}2 \right)^2 + \frac12 (y_2 - 2)^2
+\end{align*}
+$$
+So we have that the joint distribution is
 
-Probably none.
+$$
+\begin{align*}
+f(\boldsymbol y) &= \frac1{\sqrt{(2 \pi)^2 \cdot \det(\boldsymbol\Sigma)}} \exp \left( -\frac12 (\boldsymbol y - \boldsymbol\mu)^T \boldsymbol\Sigma^{-1} (\boldsymbol y - \boldsymbol\mu) \right)\\
+&= \frac1{\sqrt{(2 \pi)^2 \cdot 3}} \exp \left( -\frac12 \cdot \frac23 (y_1^2 - y_1y_2 - 3y_2+ y_2^2 + 3) \right)
+\end{align*}
+$$
+Then the marginal distribution of $Y_2$ is
+
+$$
+\begin{align*}
+f_2(y_2) &= \int_{-\infty}^{+\infty} f(\boldsymbol y) dy_1 = \int_{-\infty}^{+\infty} \frac1{\sqrt{(2 \pi)^2 \cdot \det(\boldsymbol\Sigma)}} \exp \left( -\frac12 (\boldsymbol y - \boldsymbol\mu)^T \boldsymbol\Sigma^{-1} (\boldsymbol y - \boldsymbol\mu) \right) dy_1 \\
+&= \int_{-\infty}^{+\infty} \frac1{\sqrt{(2 \pi)^2 \cdot 3}} \exp \left( -\frac12 \cdot \left( \frac23 \left(y_1 - \frac{y_2}2 \right)^2 + \frac12 (y_2 - 2)^2 \right) \right) dy_1 \\
+&= \int_{-\infty}^{+\infty} \frac1{\sqrt{2 \pi}} \exp \left( -\frac12 \frac23 \left(y_1 - \frac{y_2}2 \right)^2 \right) \frac1{\sqrt{2 \pi \cdot 3}} \exp \left( -\frac12 \frac{(y_2 - 2)^2}2 \right) dy_1 \\
+&= \frac1{\sqrt{2 \pi \cdot 3}} \exp \left( -\frac12 \frac{(y_2 - 2)^2}2 \right) \sqrt{\frac32} \int_{-\infty}^{+\infty} \frac1{\sqrt{2 \pi 3/2}} \exp \left( -\frac12 \frac{(y_1 - y_2/2)^2}{3/2} \right) dy_1 \\
+&= \frac{\sqrt{3/2}}{\sqrt{2 \pi \cdot 3}} \exp \left( -\frac12 \frac{(y_2 - 2)^2}2 \right) \cdot 1 = \frac1{\sqrt{2 \pi \cdot 2}} \exp \left( -\frac12 \frac{(y_2 - 2)^2}2 \right)
+\end{align*}
+$$
+
+so $Y_2 \sim \mathcal{N}(2, 2)$. We then compute the conditional distribution of $Y_1$ given $Y_1 + Y_2 = 3$:
+
+$$
+\begin{align*}
+f_1 (y_1 \mid y_1 + y_2 = 3) &= f_1 (y_1 \mid y_2 = 3 - y_1) = \frac{f(y_1, y_2 = 3 - y_1)}{f_2(y_2 = 3 - y_1)} \\
+&= \frac{\frac1{\sqrt{(2 \pi)^2 \cdot 3}} \exp \left( -\frac12 \cdot \frac23 (y_1^2 - y_1(3 - y_1) - 3(3 - y_1) + (3 - y_1)^2 + 3) \right)}{\frac1{\sqrt{2 \pi \cdot 2}} \exp \left( -\frac12 \frac{(3 - y_1 - 2)^2}2 \right)} \\
+&= \frac1{\sqrt{2 \pi \cdot 3/2}} \exp \left( -\frac13 (y_1^2 - 3y_1 + y_1^2 - 9 + 3y_1 + 9 - 6y_1 + y_1^2 + 3) + \frac14 (1 -2 y_1 + y_1^2) \right) \\
+&= \frac1{\sqrt{3 \pi}} \exp \left( -y_1^2 + 2y_1 - 1 + \frac14 - \frac12 y_1 + \frac14 y_1^2 \right) = \frac1{\sqrt{3 \pi}} \exp \left( - \frac34 y_1^2 + \frac34 y_1 - \frac34 \right) \\
+&= \frac1{\sqrt{3 \pi}} \exp \left( - \frac34 (y_1^2 - y_1 + 1) \right) \\
+\end{align*}
+$$
+
+
 
 ## Exercise 4.3
 
@@ -97,7 +143,7 @@ Probably none.
 
 ### Text
 
-The following code draws, in a $2 \times 2$ layout, $10$ boxplots of random samples of $1000$ from a normal distribution, $10$ boxplots of random samples of $1000$ from a *t*-distribution with $7$ *d.f.*, $10$ boxplots of random samples of $200$ from a normal distribution, and $10$ boxplots of random samples of $200$ from a t-distribution with $7$ *d.f.*:
+The following code draws, in a $2 \times 2$ layout, $10$ boxplots of random samples of $1000$ from a normal distribution, $10$ boxplots of random samples of $1000$ from a $t$-distribution with $7$ *d.f.*, $10$ boxplots of random samples of $200$ from a normal distribution, and $10$ boxplots of random samples of $200$ from a $t$-distribution with $7$ *d.f.*:
 
 ```{r daag_04_05_text_01, echo=TRUE}
 oldpar <- par(mfrow=c(2,2))
@@ -205,8 +251,7 @@ for(i in 1:10) {
 ```  
 
 ```{r daag_11_05_text_02.5, echo=TRUE}
-round(mean(OOBerr), 5)
-var(OOBerr)
+print(paste("The mean is", round(mean(OOBerr), 5), "while the variance is", round(var(OOBerr), 9)))
 ```
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; We can see that the OOB errors are more or less equal, with a mean of $0.02961$ and a very little variance.
@@ -233,12 +278,11 @@ for(i in 1:10){
 ```
 
 ```{r daag_11_05_text_03.5, echo=TRUE}
-mean(oobErr)
-mean(testErr)
+print(paste("The mean of the OOB error is", round(mean(oobErr), 5), "while the maen of the test error is", round(mean(testErr), 5)))
 ```
 
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; We can see that the two test errors can be quite different from each other. ontheless, the means are quite similar.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; We can see that the two test errors can be quite different from each other. Nontheless, the means are quite similar.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; We plot test set accuracies against OOB accuracies, adding the line `y = x` to the plot.  
 
