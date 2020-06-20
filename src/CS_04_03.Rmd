@@ -1,68 +1,67 @@
-a.
-
-To calculate the $k$ parameter we just need to compute the integral of the conjugate distribution function $f$ over the $x$ and $y$ domains, than set the result equal to 1 according one of the main probability property.
-
-$\int_{0}^{1} \left (\int_{0}^{1} f(x, y) dx \right) dy = \int_{0}^{1} \left (\int_{0}^{1} k \cdot x^{\alpha} \cdot y^{\beta} dx \right) dy = k \cdot \int_{0}^{1} y^{\beta} \cdot \int_{0}^{1} (x^{\alpha} dx) dy =$
-
-$= k \cdot \int_{0}^{1} y^{\beta} \cdot \left [\frac{x^{\alpha + 1}}{\alpha + 1} \right ]_{0}^{1} dy = k \cdot \int_{0}^{1} y^{\beta} \cdot \left (\frac{1}{\alpha + 1} \right) dy = \frac{k}{\alpha + 1} \cdot \int_{0}^{1} y^{\beta} = \frac{k}{(\alpha + 1) \cdot (\beta + 1)}$
-
-$\frac{k}{(\alpha + 1) \cdot (\beta + 1)} = 1 \rightarrow k = (\alpha + 1) \cdot (\beta + 1)$
-
-
+a. To calculate the $k$ parameter we just need to compute the integral of the conjugate distribution function $f$ over the $x$ and $y$ domains, than set the result equal to $1$ according one of the main probability property.
+$$
+\begin{align*}
+1 &= \int_{0}^{1} \left (\int_{0}^{1} f(x, y) dx \right) dy
+= \int_{0}^{1} \left (\int_{0}^{1} k \cdot x^{\alpha} \cdot y^{\beta} dx \right) dy \\
+&= k \cdot \int_{0}^{1} y^{\beta} \cdot \int_{0}^{1} (x^{\alpha} dx) dy
+= k \cdot \int_{0}^{1} y^{\beta} \cdot \left [\frac{x^{\alpha + 1}}{\alpha + 1} \right ]_{0}^{1} dy \\
+& = k \cdot \int_{0}^{1} y^{\beta} \cdot \left (\frac{1}{\alpha + 1} \right) dy
+= \frac{k}{\alpha + 1} \cdot \int_{0}^{1} y^{\beta} dy \\
+&= \frac{k}{(\alpha + 1) \cdot (\beta + 1)}
+\end{align*}
+$$
+So we can compute $k$:
+$$
+\frac{k}{(\alpha + 1) \cdot (\beta + 1)} = 1 \quad \Longrightarrow \quad k = (\alpha + 1) \cdot (\beta + 1)
+$$
 if $\alpha \neq 1$ and $\beta \neq 1$.
 
-b.
-
-To calculate the maximum likelihood estimators for $\alpha$ and $\beta$ we have to calculate the likelihood function.
-
-$L(\theta) = \prod_{i = 1}^{n} (k \cdot x_{i}^{\alpha} \cdot y_{i}^{\beta})$
-
-That we traslate in log-likelihood function because it is more suitable for our purposes.
-
-$l(\theta) = \sum_{i = 1}^{n} (\log(k \cdot x_{i}^{\alpha} \cdot y_{i}^{\beta})) =$
-$n \cdot \log(k) + \sum_{i = 1}^{n} (\log(x_{i}^{\alpha}) + \log(\cdot y_{i}^{\beta})) =$
-$n \cdot \log(k) + \sum_{i = 1}^{n} (\alpha \cdot \log(x_{i}) + \beta \cdot \log(\cdot y_{i})) =$
-$n \cdot \log(k) + \sum_{i = 1}^{n} \alpha \cdot \log(x_{i}) + \sum_{i = 1}^{n} \beta \cdot \log( y_{i})=$
-$n \cdot \log(k) + \alpha \cdot \sum_{i = 1}^{n} \log(x_{i}) + \beta \cdot \sum_{i = 1}^{n} \log( y_{i})$
-
-Know, we can compute the first derivatives and obtain the estimators.
-
-$\frac{\partial l(\theta)}{\partial \alpha} = \frac{n}{\alpha + 1} + \sum_{i = 1}^{n} \log(x_{i})$; 
-$\frac{\partial l(\theta)}{\partial \beta} = \frac{n}{\beta + 1} + \sum_{i = 1}^{n} \log(y_{i})$
-
-Set to zero the previous derivatives.
-
-$\frac{\partial l(\theta)}{\partial \alpha} = 0 \rightarrow \hat{\alpha} = \frac{-n}{\sum_{i = 1}^{n} \log(x_{i})} - 1$
-
-$\frac{\partial l(\theta)}{\partial \beta} = 0 \rightarrow \hat{\beta} = \frac{-n}{\sum_{i = 1}^{n} \log(y_{i})} - 1$
-
+b. To calculate the maximum likelihood estimators for $\alpha$ and $\beta$ we have to calculate the likelihood function.
+$$
+L(\theta) = \prod_{i = 1}^{n} ((\alpha + 1)(\beta + 1) \cdot x_{i}^{\alpha} \cdot y_{i}^{\beta})
+$$
+We transform it in the log-likelihood function because it is more suitable for our purposes:
+$$
+\begin{align*}
+l(\theta) &= \sum_{i = 1}^{n} (\log((\alpha + 1)(\beta + 1) \cdot x_{i}^{\alpha} \cdot y_{i}^{\beta})) \\
+&= n \cdot \log((\alpha + 1)(\beta + 1)) + \sum_{i = 1}^{n} (\log(x_{i}^{\alpha}) + \log(y_{i}^{\beta})) \\
+&= n \cdot \log((\alpha + 1)(\beta + 1)) + \sum_{i = 1}^{n} (\alpha \cdot \log(x_{i}) + \beta \cdot \log(y_{i})) \\
+&= n \cdot \log((\alpha + 1)(\beta + 1)) + \sum_{i = 1}^{n} \alpha \cdot \log(x_{i}) + \sum_{i = 1}^{n} \beta \cdot \log( y_{i}) \\
+&= n \cdot \log((\alpha + 1)(\beta + 1)) + \alpha \cdot \sum_{i = 1}^{n} \log(x_{i}) + \beta \cdot \sum_{i = 1}^{n} \log( y_{i})
+\end{align*}
+$$
+Now we can compute the first derivatives and obtain the estimators:
+$$
+\frac{\partial l(\theta)}{\partial \alpha} = \frac{n}{\alpha + 1} + \sum_{i = 1}^{n} \log(x_{i}); \\
+\frac{\partial l(\theta)}{\partial \beta} = \frac{n}{\beta + 1} + \sum_{i = 1}^{n} \log(y_{i})
+$$
+Setting to zero the previous derivatives we obtain the maximum likelihood estimators of $\alpha$ and $\beta$:
+$$
+\frac{\partial l(\theta)}{\partial \alpha} = 0 \rightarrow \hat{\alpha} = \frac{-n}{\sum_{i = 1}^{n} \log(x_{i})} - 1 \\
+\frac{\partial l(\theta)}{\partial \beta} = 0 \rightarrow \hat{\beta} = \frac{-n}{\sum_{i = 1}^{n} \log(y_{i})} - 1
+$$
 if exist at least a $x_{i}$ and a $y_{i}$ not equal to one.
 
-c.
-
-To calculate the variances for the estimated parameters we need to compute the Fisher Information Matrix, but, first of all, we compute the Hessian matrix of the log-likelihood function.
-
-$\frac{\partial l(theta)^{2}}{\partial^{2} \alpha} = \frac{-n}{(\alpha + 1)^{2}}$; 
-$\frac{\partial l(theta)^{2}}{\partial^{2} \beta} = \frac{-n}{(\beta + 1)^{2}}$; 
-$\frac{\partial l(theta)^{2}}{\partial \alpha \partial \beta} = \frac{\partial l(theta)^{2}}{\partial \beta \partial \alpha} = 0$
-
-That we may rapresent in more compact way by using the Hessian Matrix.
-
-$H(\theta) = \begin{vmatrix} \frac{-n}{(\alpha + 1)^{2}} & 0 \\ 0 & \frac{-n}{(\beta + 1)^{2}} \end{vmatrix}$
-
-Then, we compute the Observed Information Matrix as follows.
-
-$J(\theta) = - H(\theta) = \begin{vmatrix} \frac{n}{(\alpha + 1)^{2}} & 0 \\ 0 & \frac{n}{(\beta + 1)^{2}} \end{vmatrix}$
-
-At the end we compute the Fisher Information Matrix.
-
-$I(\theta) = E\{J(\theta)\} = \begin{vmatrix} \frac{n}{(\alpha + 1)^{2}} & 0 \\ 0 & \frac{n}{(\beta + 1)^{2}} \end{vmatrix}$
-
-As you can see this matrix is still a simmetric and squared matrix, moreover the elements on the secondary diagonal are nulls so it means that $\alpha$ and $\beta$ are asymptotically uncorrelated. So, The variaces for our paramters are defined as follow.
-
-$Var(\hat{\theta}) = \frac{1}{I(\theta)} = \begin{vmatrix} \frac{n}{(\alpha + 1)^{2}} & 0 \\ 0 & \frac{n}{(\beta + 1)^{2}} \end{vmatrix}$
-
+c. To calculate the variances for the estimated parameters we need to compute the Fisher Information Matrix, but, first of all, we compute the Hessian matrix of the log-likelihood function.
+$$
+\frac{\partial l(\theta)^{2}}{\partial^{2} \alpha} = \frac{-n}{(\alpha + 1)^{2}} \\
+\frac{\partial l(\theta)^{2}}{\partial^{2} \beta} = \frac{-n}{(\beta + 1)^{2}} \\
+\frac{\partial l(\theta)^{2}}{\partial \alpha \partial \beta} = \frac{\partial l(\theta)^{2}}{\partial \beta \partial \alpha} = 0
+$$
+We may rapresent it in more compact way by using the Hessian Matrix:
+$$
+H(\theta) = \begin{bmatrix} \frac{-n}{(\alpha + 1)^{2}} & 0 \\ 0 & \frac{-n}{(\beta + 1)^{2}} \end{bmatrix}
+$$
+Then, we compute the Observed Information Matrix as follows:
+$$
+J(\theta) = - H(\theta) = \begin{bmatrix} \frac{n}{(\alpha + 1)^{2}} & 0 \\ 0 & \frac{n}{(\beta + 1)^{2}} \end{bmatrix}
+$$
+In the end we compute the Fisher Information Matrix:
+$$
+I(\theta) = E\{J(\theta)\} = \begin{bmatrix} \frac{n}{(\alpha + 1)^{2}} & 0 \\ 0 & \frac{n}{(\beta + 1)^{2}} \end{bmatrix}
+$$
+As we can see this matrix is still a simmetric and squared matrix, moreover the elements on the secondary diagonal are zeros so it means that $\alpha$ and $\beta$ are asymptotically uncorrelated. So, the variances for our paramters are defined as follows:
+$$
+Var(\hat{\theta}) = \frac{1}{I(\theta)} = \begin{bmatrix} \frac{n}{(\alpha + 1)^{2}} & 0 \\ 0 & \frac{n}{(\beta + 1)^{2}} \end{bmatrix}
+$$
 In particular, $I(\theta) = \frac{1}{I(\theta)}$, or another way to compute them is throught the SE statistic, and it is computed directly by using $I(\theta)$.
-
-
-
