@@ -310,28 +310,84 @@ randomForest::randomForest(class~ ., data=biops, xtest=biops[,-10], ytest=biops[
 
 ### Text
 
-***Learning about the upper bound of a discrete uniform density***  
+***Learning about an exponential mean***  
 
-Suppose one takes independent observations $y_1 , \dots, y_n$ from a uniform distribution on the set $\{{1, 2, \dots, N }\}$, where the upper bound $N$ is unknown.  
-Suppose one places a uniform prior for $N$ on the values $1, \dots, B$, where $B$ is known. Then the posterior probabilities for $N$ are given by  
+Suppose a random sample is taken from an *exponential distribution* with mean $\lambda$. If we assign the usual noninformative prior $g(\lambda) \propto \frac{1}{\lambda}$, then the posterior density is given, up to a proportionality constant, by
 $$
-g(N|y) \propto \frac{1}{N^n}, \ y_{(n)} \leq N \leq B \ .
+g(\lambda|\text{data}) \propto \lambda^{−n−1} \ e^{−s/\lambda}
 $$
+where $n$ is the sample size and $s$ is the sum of the observations.  
 
-where $y_{(n)}$ is the maximum observation. To illustrate this situation, suppose a tourist is waiting for a taxi in a city. During this waiting time, she observes five taxis with the numbers $43$, $24$, $100$, $35$, and $85$. She assumes that taxis in this city are numbered from $1$ to $N$, she is equally likely to observe any numbered taxi at a given time, and observations are independent. She also knows that there cannot be more than $200$ taxis in the city.  
 
-a) Use $\mathsf{R}$ to compute the posterior probabilities of $N$ on a grid of values.  
-b) Compute the posterior mean and posterior standard deviation of $N$.  
-c) Find the probability that there are more than $150$ taxis in the city.  
+a) Show that if we transform $\lambda$ to $\theta$ = $\frac{1}{\lambda}$, then $\theta$ has a *gamma density* with shape parameter $n$ and rate parameter $s$. (A gamma density with
+shape $\alpha$ and rate $\beta$ is proportional to $h(x) = x^{\alpha−1} e^{−\beta x}$.)  
+
+
+b) In a life-testing illustration, five bulbs are tested with observed burn times (in hours) of
+$$751, 594, 1213, 1126, 819$$ Using the $\mathsf{R}$ function $\mathsf{rgamma}$, simulate $1000$ values from the posterior distribution of $\theta$.  
+
+
+c) By transforming these simulated draws, obtain a simulated sample from the posterior distribution of $\lambda$.  
+
+
+d) Estimate the posterior probability that $\lambda$ exceeds $1000$ hours.
 
 
 ### Solution
 
-<!--```{r bc_03_02, code = readLines("src/BC_03_02.R"), echo=TRUE}
-```                                                                    -->
+To begin with, in the following analysis we restrict the support of the *exponential distribution* to the *positive reals* $[0,+\infty]$, knowing that it will be otherwise constantly zero anyway.  
 
-### Comments
+With such specification, we know that
+$$
+\text{Exp}_{\omega}(x) = \omega \ e^{-\omega x}
+$$
+with *mean* $\text{E}_x[\text{Exp}_{\omega}(x) = \omega \ e^{-\omega x}] \ = \ \frac{1}{\omega}$.  
 
-XYZ.
+Knowing that, in our case, it is given that $\text{E}_x[\text{Exp}_{\omega}(x) = \omega \ e^{-\omega x}] \ = \ \frac{1}{\omega} \ = \ \lambda$, the exponential distribution from which the samples are taken will be:
+$$
+\text{Exp}_{\frac{1}{\lambda}}(x) = \frac{1}{\lambda} \ e^{-\frac{1}{\lambda} x}
+$$
+
+#### (a)  
+
+The given posterior distribution is specified, up to a proportionality constant, by the following:
+$$
+g(\lambda|\text{data}) \propto \lambda^{−n−1} \ e^{−s/\lambda}
+$$
+As per the *Theorem for the Change of Random Variables*, and by defining the *c.o.v.* $\theta = \frac{1}{\lambda} \rightarrow \lambda = \frac{1}{\theta}$, we obtain (knowing that $\theta > 0$):
+$$
+\tilde{g}(\theta|\text{data}) \propto \theta^{\ n+1} \ e^{−s\theta} \ \left|{\frac{d\theta^{-1}}{d\theta}}\right| \ = \ \theta^{\ n+1} \ e^{−s\theta} \ \left|{-\theta^{-2}}\right| \ = \ \theta^{\ n-1} \ e^{−s\theta}
+$$
+*Quod erat demonstrandum.*
+
+#### (b, c, d)  
+
+```{r bc_03_02_01, echo=TRUE}
+obs <- c(751, 594, 1213, 1126, 819)    # Observations
+
+s <- sum(obs)                          # Sum of observations
+n <- length(obs)                       # Number of observations
+
+replicatesnr <- 1000                   # Number of posterior samples to draw
+
+# Posterior Thetas
+theta_sim <- rgamma(replicatesnr, shape=n, rate=s)
+
+# Posterior Lambdas
+lambda_sim <- 1.0/theta_sim
+
+# Estimate of lambda > 1000 | (from the 1000 samples above)
+prest_1000 <- sum(lambda_sim > 1000) / replicatesnr    # ~ 0.463
+
+
+# Estimate of lambda > 1000 | (from n_samples -> +infty)
+approx_infty <- 10000000    # The best we can with 16GB RAM (in one run!)
+prest_infty <- sum((1.0/rgamma(approx_infty, shape=n, rate=s)) > 1000) / approx_infty    # ~ 0.469
+
+```
+
+### Comments (d)
+
+From the sampling performed above, we can show that the approximation offered by the mentioned $1000$ samples from the posterior of $\lambda$ is sufficient to obtain a $<1\%$-*correct* approximation for the posterior probability that $\lambda > 1000$, being given and fixed all the available observations.
 
 <!-- LEAVE A NEWLINE AT THE END-OF-FILE! -->
