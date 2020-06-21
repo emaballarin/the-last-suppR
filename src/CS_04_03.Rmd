@@ -1,4 +1,5 @@
-a. To calculate the $k$ parameter we just need to compute the integral of the conjugate distribution function $f$ over the $x$ and $y$ domains, than set the result equal to $1$ according one of the main probability property.
+a. To calculate the $k$ parameter we just need to compute the integral of the joint distribution function $f$ over the $x$ and $y$ domains, than set the result equal to $1$ in order to enforce normalization.
+
 $$
 \begin{align*}
 1 &= \int_{0}^{1} \left (\int_{0}^{1} f(x, y) dx \right) dy
@@ -20,7 +21,7 @@ b. To calculate the maximum likelihood estimators for $\alpha$ and $\beta$ we ha
 $$
 L(\theta) = \prod_{i = 1}^{n} ((\alpha + 1)(\beta + 1) \cdot x_{i}^{\alpha} \cdot y_{i}^{\beta})
 $$
-We transform it in the log-likelihood function because it is more suitable for our purposes:
+We transform it into the log-likelihood function because it is more suitable for our purposes:
 $$
 \begin{align*}
 l(\theta) &= \sum_{i = 1}^{n} (\log((\alpha + 1)(\beta + 1) \cdot x_{i}^{\alpha} \cdot y_{i}^{\beta})) \\
@@ -40,7 +41,7 @@ $$
 \frac{\partial l(\theta)}{\partial \alpha} = 0 \rightarrow \hat{\alpha} = \frac{-n}{\sum_{i = 1}^{n} \log(x_{i})} - 1 \\
 \frac{\partial l(\theta)}{\partial \beta} = 0 \rightarrow \hat{\beta} = \frac{-n}{\sum_{i = 1}^{n} \log(y_{i})} - 1
 $$
-if exist at least a $x_{i}$ and a $y_{i}$ not equal to one.
+if there exist at least both an $x_{i}$ and a $y_{i}$ not equal to one.
 
 c. To calculate the variances for the estimated parameters we need to compute the Fisher Information Matrix, but, first of all, we compute the Hessian matrix of the log-likelihood function.
 $$
@@ -60,7 +61,7 @@ In the end we compute the Fisher Information Matrix:
 $$
 I(\theta) = E\{J(\theta)\} = \begin{bmatrix} \frac{n}{(\alpha + 1)^{2}} & 0 \\ 0 & \frac{n}{(\beta + 1)^{2}} \end{bmatrix}
 $$
-As we can see this matrix is still a simmetric and squared matrix, moreover the elements on the secondary diagonal are zeros so it means that $\alpha$ and $\beta$ are asymptotically uncorrelated. So, the variances for our paramters are defined as follows:
+As we can see this matrix is still a symmetric and square matrix, moreover the elements on the secondary diagonal are zeros so it means that $\alpha$ and $\beta$ are asymptotically uncorrelated. So, the variances for our paramters are defined as follows:
 $$
 Var(\hat{\theta}) = \frac{1}{I(\theta)} = \begin{bmatrix} \frac{n}{(\alpha + 1)^{2}} & 0 \\ 0 & \frac{n}{(\beta + 1)^{2}} \end{bmatrix}
 $$
