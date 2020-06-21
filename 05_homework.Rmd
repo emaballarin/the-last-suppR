@@ -372,9 +372,17 @@ replicatesnr <- 1000                   # Number of posterior samples to draw
 
 # Posterior Thetas
 theta_sim <- rgamma(replicatesnr, shape=n, rate=s)
+hist(theta_sim, breaks=20,
+     main="Simulated Thetas",
+     xlab="sampled value",
+     ylab="occurrencies (of 1000)")
 
 # Posterior Lambdas
 lambda_sim <- 1.0/theta_sim
+hist(lambda_sim, breaks=16,
+     main="Simulated Lambdas",
+     xlab="sampled value",
+     ylab="occurrencies (of 1000)")
 
 # Estimate of lambda > 1000 | (from the 1000 samples above)
 prest_1000 <- sum(lambda_sim > 1000) / replicatesnr    # ~ 0.463
