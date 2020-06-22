@@ -39,7 +39,7 @@ local({
 
 
 
-# Exercises from *CS* 
+# Exercises from *CS*
 
 ## Exercise 1.3
 
@@ -115,13 +115,13 @@ $$
 
 ### Text
 
-Random variables $\mathit{X}$ and $\mathit{Y}$ have joint *p.d.f.* $f(x,y) = kx^{\alpha}y^{\beta}$, $0 \leq x \leq 1$, $0 \leq y \leq 1$. Assume that you have $n$ independent pairs of observations $\left({ x_i, y_i }\right)$.  
+Random variables $\mathit{X}$ and $\mathit{Y}$ have joint *p.d.f.* $f(x,y) = kx^{\alpha}y^{\beta}$, $0 \leq x \leq 1$, $0 \leq y \leq 1$. Assume that you have $n$ independent pairs of observations $\left({ x_i, y_i }\right)$.
 
-(a) Evaluate $k$ in terms of $\alpha$ and $\beta$.  
+(a) Evaluate $k$ in terms of $\alpha$ and $\beta$.
 
-(b) Find the maximum likelihood estimators of $\alpha$ and $\beta$.   
+(b) Find the maximum likelihood estimators of $\alpha$ and $\beta$.
 
-(c) Find approximate variances of $\hat{\alpha}$ and $\hat{\beta}$.   
+(c) Find approximate variances of $\hat{\alpha}$ and $\hat{\beta}$.
 
 
 ### Solution
@@ -216,7 +216,7 @@ $$
 
 In particular, $I(\theta) = \frac{1}{I(\theta)}$, or another way to compute them is throught the SE statistic, and it is computed directly by using $I(\theta)$.
 
-# Exercises from *DAAG* 
+# Exercises from *DAAG*
 
 ## Exercise 4.5
 
@@ -250,7 +250,7 @@ Refer back to the discussion of heavy-tailed distributions in *DAAG, 3.2.2*, and
 
 The analisys over these boxplots follows a top-down structure. So, the first things that we may say are related with the mean. In fact each set of $10$ boxplots have, more or less, the same mean value, i.e. around $0$, but with a very small fluctuation in the $100$ samples cases. The same happens on the maximum and minimum values but with different values in case the samples come from a normal distribution or $t$ distribution, but in this case we have to look according to which distribution the samples belong to (more details will be given later). Last comment on the overall boxplots is about the box-size defined by the quantiles: as we can see the box-size for the normal distributions is larger than the box-size for the $t$ distribution, also if we consider the set of boxplots with less samples.
 
-Now, we may say something more by looking each of the four set of boxes. In the top-left quarter, the max and min values are, more or less, close to $2.3$ in absolute value, and it is the same for the first and third quantiles; this is quite important because it means this normal distribution is very simmetric. 
+Now, we may say something more by looking each of the four set of boxes. In the top-left quarter, the max and min values are, more or less, close to $2.3$ in absolute value, and it is the same for the first and third quantiles; this is quite important because it means this normal distribution is very simmetric.
 
 The boxplot might detect some points like a possible outliers, and this is shown by the set of points outside the "whiskers"; in particular, more far from the first and third quantiles they are and more suitable they are to be outliers. Moreover, from the heavy-tailed definition we know that a general distribution is classified as an heavy-tailed if its boxplot shows some candidate outliers in both sides of the "whiskers", otherwise it is classfied as a skewed distribution (i.e. we detect some outliers in just one of the two sides).
 
@@ -266,9 +266,9 @@ In the bottom-right quarter, things are now similar to the bottom-left quarter, 
 
 ### Text
 
-This exercise will compare alternative measures of accuracy from $\mathsf{randomForest()}$ runs.  
+This exercise will compare alternative measures of accuracy from $\mathsf{randomForest()}$ runs.
 
-First, $16$ rows where data (on `V6`) is missing will be omitted:  
+First, $16$ rows where data (on `V6`) is missing will be omitted:
 
 ```{r daag_11_05_text_01, echo=TRUE}
 library(MASS)
@@ -294,11 +294,11 @@ names(randomForest::randomForest(class~ ., data=biops))
 for(i in 1:10) {
   biops.rf <- randomForest(class~ ., data=biops)
   OOBerr <- mean(biops.rf$err.rate[,"OOB"])
-  
+
   print(paste(i, ": ", round(OOBerr, 4), sep=""))
   print(round(biops.rf$confusion, 4))
 }
-``` 
+```
 
 (b) Compare *OOB* accuracies with *test* set accuracies:
 
@@ -317,7 +317,7 @@ for(i in 1:10){
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Plot test set accuracies against OOB accuracies. Add the line `y = x` to the plot. Is there any consistent difference in the accuracies? Given a random training/test split, is there any reason to expect a consistent difference between OOB accuracy and test accuracy?
 
-(c) Calculate the error rate for the training data:  
+(c) Calculate the error rate for the training data:
 
 ```{r, echo=TRUE, eval=FALSE}
 randomForest(class~ ., data=biops, xtest=biops[,-10],
@@ -336,11 +336,11 @@ OOBerr <- c()
 for(i in 1:10) {
   biops.rf  <- randomForest::randomForest(class~ ., data=biops)
   OOBerr[i] <- mean(biops.rf$err.rate[,"OOB"])
-  
+
   print(paste(i, ": OOB err = ", round(OOBerr[i], 4), sep=""))
   print(round(biops.rf$confusion, 4))
 }
-```  
+```
 
 ```{r daag_11_05_text_02.5, echo=TRUE}
 print(paste("The mean is", round(mean(OOBerr), 5), "while the variance is", round(var(OOBerr), 9)))
@@ -357,14 +357,14 @@ oobErr <- c()
 testErr <- c()
 for(i in 1:10){
   trRows <- sample(1:dim(biops)[1], size=round(dim(biops)[1]/2))
-  
+
   biops.rf <- randomForest::randomForest(class~ ., data=biops[trRows, ],
     xtest=biops[-trRows,-10],
     ytest=biops[-trRows,10])
-  
+
   oobErr[i] <- mean(biops.rf$err.rate[,"OOB"])
   testErr[i] <- mean(biops.rf$test$err.rate[,"Test"])
-  
+
   print(round(c(oobErr[i],testErr[i]),4))
 }
 ```
@@ -377,7 +377,7 @@ print(paste("The mean of the OOB error is", round(mean(oobErr), 5), "while the m
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; We can see that the two test errors can be quite different from each other. Nontheless, the means are quite similar.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; We plot test set accuracies against OOB accuracies, adding the line `y = x` to the plot.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; We plot test set accuracies against OOB accuracies, adding the line `y = x` to the plot.
 
 ```{r daag_11_05_text_04, echo=TRUE}
 plot(oobErr,testErr, xlab="OOB error", ylab="test error", main = "Test set accuracies")
@@ -387,7 +387,7 @@ abline(0, 1, col="red")
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; We can see that there isn't any consistent difference in the accuracies, and given a random training/test split, there isn't any reason to expect a consistent difference between OOB accuracy and test accuracy. This is since the points in the graph are always changing position at each repetition and they don't show any pattern in the plot at all, only randomness.
 
-(c) We calculate the error rate for the training data:  
+(c) We calculate the error rate for the training data:
 
 ```{r daag_11_05_text_05, echo=TRUE}
 randomForest::randomForest(class~ ., data=biops, xtest=biops[,-10], ytest=biops[,10])
@@ -396,30 +396,30 @@ randomForest::randomForest(class~ ., data=biops, xtest=biops[,-10], ytest=biops[
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The use of training data for testing leads to an error rate that is zero because the model was explicitly trained to reduce at most the error between the predicted labels and the true labels of the training data. Anyway, this tells us that this model is very good at predicting the labels of this specific dataset. But it could perform poorly on another set of data, since it may be overfitting the data at our disposal. That's why the model should always be tested on data that wasn't used for the training phase.
 
 
-# Exercises from *BC* 
+# Exercises from *BC*
 
 ## Exercise 3.2
 
 ### Text
 
-***Learning about an exponential mean***  
+***Learning about an exponential mean***
 
 Suppose a random sample is taken from an *exponential distribution* with mean $\lambda$. If we assign the usual noninformative prior $g(\lambda) \propto \frac{1}{\lambda}$, then the posterior density is given, up to a proportionality constant, by
 $$
 g(\lambda|\text{data}) \propto \lambda^{−n−1} \ e^{−s/\lambda}
 $$
-where $n$ is the sample size and $s$ is the sum of the observations.  
+where $n$ is the sample size and $s$ is the sum of the observations.
 
 
 a) Show that if we transform $\lambda$ to $\theta$ = $\frac{1}{\lambda}$, then $\theta$ has a *gamma density* with shape parameter $n$ and rate parameter $s$. (A gamma density with
-shape $\alpha$ and rate $\beta$ is proportional to $h(x) = x^{\alpha−1} e^{−\beta x}$.)  
+shape $\alpha$ and rate $\beta$ is proportional to $h(x) = x^{\alpha−1} e^{−\beta x}$.)
 
 
 b) In a life-testing illustration, five bulbs are tested with observed burn times (in hours) of
-$$751, 594, 1213, 1126, 819$$ Using the $\mathsf{R}$ function $\mathsf{rgamma}$, simulate $1000$ values from the posterior distribution of $\theta$.  
+$$751, 594, 1213, 1126, 819$$ Using the $\mathsf{R}$ function $\mathsf{rgamma}$, simulate $1000$ values from the posterior distribution of $\theta$.
 
 
-c) By transforming these simulated draws, obtain a simulated sample from the posterior distribution of $\lambda$.  
+c) By transforming these simulated draws, obtain a simulated sample from the posterior distribution of $\lambda$.
 
 
 d) Estimate the posterior probability that $\lambda$ exceeds $1000$ hours.
@@ -427,20 +427,20 @@ d) Estimate the posterior probability that $\lambda$ exceeds $1000$ hours.
 
 ### Solution
 
-To begin with, in the following analysis we restrict the support of the *exponential distribution* to the *positive reals* $[0,+\infty]$, knowing that it will be otherwise constantly zero anyway.  
+To begin with, in the following analysis we restrict the support of the *exponential distribution* to the *positive reals* $[0,+\infty]$, knowing that it will be otherwise constantly zero anyway.
 
 With such specification, we know that
 $$
 \text{Exp}_{\omega}(x) = \omega \ e^{-\omega x}
 $$
-with *mean* $\text{E}_x[\text{Exp}_{\omega}(x) = \omega \ e^{-\omega x}] \ = \ \frac{1}{\omega}$.  
+with *mean* $\text{E}_x[\text{Exp}_{\omega}(x) = \omega \ e^{-\omega x}] \ = \ \frac{1}{\omega}$.
 
 Knowing that, in our case, it is given that $\text{E}_x[\text{Exp}_{\omega}(x) = \omega \ e^{-\omega x}] \ = \ \frac{1}{\omega} \ = \ \lambda$, the exponential distribution from which the samples are taken will be:
 $$
 \text{Exp}_{\frac{1}{\lambda}}(x) = \frac{1}{\lambda} \ e^{-\frac{1}{\lambda} x}
 $$
 
-#### (a)  
+#### (a)
 
 The given posterior distribution is specified, up to a proportionality constant, by the following:
 $$
@@ -452,7 +452,7 @@ $$
 $$
 *Quod erat demonstrandum.*
 
-#### (b, c, d)  
+#### (b, c, d)
 
 ```{r bc_03_02_01, echo=TRUE}
 obs <- c(751, 594, 1213, 1126, 819)    # Observations
@@ -478,11 +478,13 @@ hist(lambda_sim, breaks=16,
 
 # Estimate of lambda > 1000 | (from the 1000 samples above)
 prest_1000 <- sum(lambda_sim > 1000) / replicatesnr    # ~ 0.463
+print(prest_1000)
 
 
 # Estimate of lambda > 1000 | (from n_samples -> +infty)
-approx_infty <- 10000000    # The best we can with 16GB RAM (in one run!)
+approx_infty <- 10000000
 prest_infty <- sum((1.0/rgamma(approx_infty, shape=n, rate=s)) > 1000) / approx_infty    # ~ 0.469
+print(prest_infty)
 
 ```
 
